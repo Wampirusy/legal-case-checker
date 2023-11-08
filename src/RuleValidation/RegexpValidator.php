@@ -17,7 +17,7 @@ class RegexpValidator extends ValidatorAbstract
             $pattern = $this->createRegexp();
 
             try {
-                if (preg_match_all($pattern, $text, $matches)) {
+                if (@preg_match_all($pattern, $text, $matches)) {
                     return $matches[0];
                 }
 

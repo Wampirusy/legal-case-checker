@@ -2,21 +2,16 @@
 
 namespace PDFfiller\LegalCaseChecker\RuleValidation;
 
-use PDFfiller\Models\RulePatternType;
+use PDFfiller\LegalCaseChecker\Models\RulePatternType;
 
 class ValidatorFactory
 {
-    public static function createValidator(RulePatternType $rulePatternType, string $pattern): ValidatorAbstract
+    public function createValidator(RulePatternType $rulePatternType, string $pattern): ValidatorAbstract
     {
-        switch ($rulePatternType) {
-            case RulePatternType::Word:
-                return new WordValidator($pattern);
-            case RulePatternType::WildCard:
-                return new WildCardValidator($pattern);
-            case RulePatternType::Regexp:
-                return new RegexpValidator($pattern);
-        }
-
-        throw new \Exception('Unknown rule pattern type.');
+        return match ($rulePatternType) {
+            RulePatternType::Regexp => new RegexpValidator($pattern),
+            RulePatternType::WildCard => new WildCardValidator($pattern),
+            default => new WordValidator($pattern),
+        };
     }
 }

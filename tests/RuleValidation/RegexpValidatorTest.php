@@ -37,6 +37,19 @@ class RegexpValidatorTest extends TestCase
         $validator = new RegexpValidator('/\/\/');
 
         $this->expectException(InvalidRuleException::class);
-        $this->assertEquals(empty($errors), $validator->validate('text'));
+        $validator->validate('text');
+    }
+
+    public function testValidatorExceptionMessage(): void
+    {
+        $validator = new RegexpValidator('/\/\/');
+
+        set_error_handler(function (int $errno, string $errstr) {
+            throw new \ErrorException($errstr);
+        });
+
+        $this->expectException(InvalidRuleException::class);
+        $this->expectExceptionMessage('Compilation failed: missing closing parenthesis at offset 39');
+        $validator->validate('text');
     }
 }
