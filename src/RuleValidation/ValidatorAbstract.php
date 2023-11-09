@@ -4,6 +4,7 @@ namespace PDFfiller\LegalCaseChecker\RuleValidation;
 
 abstract class ValidatorAbstract
 {
+    // matched sentence or part of text 200 symbols length
     protected const WRAPPED_PATTERN = '/\b[^.!?]{0,50}(%s)[^.!?]{0,50}[.!?\s]?/i';
 
     protected array $errors = [];

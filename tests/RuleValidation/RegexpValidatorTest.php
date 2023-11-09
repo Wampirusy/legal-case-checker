@@ -22,13 +22,11 @@ class RegexpValidatorTest extends TestCase
     public static function dataProvider(): array
     {
         return [
+            ['text', '', []],
             ['one two tree', 'zero', []],
             ['one two tree. for five.', 'TWO', ['one two tree.']],
-            ['text', '', []],
-            ['one two tree. for five.', '/TWO/', ['one two tree.']], // it is insensitive
-            ['one two tree. for five.', '/FOR/i', ['for five.']],
-            ['one two tree. for five.', '/one|TWO/i', ['one two tree.']],
-            ['one two tree. for five.', '/two|five/i', ['one two tree.', 'for five.']],
+            ['one two tree. for five.', 'one|TWO', ['one two tree.']],
+            ['one two tree. for five.', 'two|five', ['one two tree.', 'for five.']],
         ];
     }
 
@@ -49,7 +47,7 @@ class RegexpValidatorTest extends TestCase
         });
 
         $this->expectException(InvalidRuleException::class);
-        $this->expectExceptionMessage('Compilation failed: missing closing parenthesis at offset 39');
+        $this->expectExceptionMessage("Unknown modifier '\'");
         $validator->validate('text');
     }
 }

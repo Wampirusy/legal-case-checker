@@ -14,7 +14,7 @@ class RegexpValidator extends ValidatorAbstract
     protected function doValidate(string $text): array
     {
         if ($this->pattern) {
-            $pattern = $this->createRegexp();
+            $pattern = $this->createWrappedRegexp($this->pattern);
 
             try {
                 if (@preg_match_all($pattern, $text, $matches)) {
@@ -30,22 +30,6 @@ class RegexpValidator extends ValidatorAbstract
         }
 
         return [];
-    }
-
-    private function createRegexp(): string
-    {
-        if (
-            strlen($this->pattern) > 3
-            && $this->pattern[0] === '/'
-            && ($lastDelimiter = strrpos($this->pattern, '/')) > 0
-        ) { // probably it is the completed regexp
-            $pattern = substr($this->pattern, 1, $lastDelimiter - 1);
-            $options = substr($this->pattern, $lastDelimiter + 1);
-
-            return $this->createWrappedRegexp($pattern).$options;
-        }
-
-        return $this->createWrappedRegexp(preg_quote($this->pattern, '/'));
     }
 
     /**

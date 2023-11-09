@@ -34,6 +34,8 @@ class WordValidatorTest extends TestCase
             ],
             ['one two tree. for five', 'one two', ['one two tree.']],
             ['one two tree. for five', '     one     two     ', ['one two tree.']],
+            ['one      two    tree. for five', 'one two', ['one      two    tree.']],
+
             ['one. t\'wo. tree', 't\'wo', ['t\'wo.']],
             ['te/xt', 'te/xt', ['te/xt']],
             ['text', '', []],
